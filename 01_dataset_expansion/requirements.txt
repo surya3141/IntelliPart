@@ -1,0 +1,26 @@
+# Production Dataset Generation Requirements
+# Core dependencies for 200K+ parts with 50+ attributes
+
+# Data generation and manipulation
+Faker==25.2.0
+pandas>=2.0.0
+numpy>=1.24.0
+
+# Date and time handling
+python-dateutil>=2.8.0
+
+# Logging and monitoring
+loguru>=0.7.0
+
+# File handling and compression
+pathlib2>=2.3.0
+
+# Optional: For advanced analytics integration
+scikit-learn>=1.3.0
+
+# Optional: For image processing (if generating actual images)
+Pillow>=10.0.0
+
+# Development and testing
+pytest>=7.0.0
+pytest-cov>=4.0.0

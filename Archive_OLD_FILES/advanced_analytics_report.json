@@ -1,0 +1,646 @@
+{
+  "report_metadata": {
+    "generated_at": "2025-07-04T23:09:31.577059",
+    "total_parts_analyzed": 4500,
+    "analysis_types": [
+      "demand_prediction",
+      "supply_chain",
+      "quality_prediction",
+      "cost_optimization"
+    ]
+  },
+  "demand_analysis": {
+    "system_analysis": [
+      {
+        "system": "ENGINE",
+        "avg_cost": 5103.5,
+        "avg_stock": 243.5,
+        "part_count": 1035,
+        "demand_score": 4,
+        "trend": "high",
+        "recommendation": "MEDIUM: Monitor closely and plan restocking"
+      },
+      {
+        "system": "BODY",
+        "avg_cost": 5013.77,
+        "avg_stock": 251.9,
+        "part_count": 900,
+        "demand_score": 4,
+        "trend": "high",
+        "recommendation": "MEDIUM: Monitor closely and plan restocking"
+      },
+      {
+        "system": "BRAKES",
+        "avg_cost": 5040.11,
+        "avg_stock": 252.7,
+        "part_count": 360,
+        "demand_score": 4,
+        "trend": "high",
+        "recommendation": "MEDIUM: Monitor closely and plan restocking"
+      },
+      {
+        "system": "SUSPENSION",
+        "avg_cost": 4926.63,
+        "avg_stock": 234.8,
+        "part_count": 360,
+        "demand_score": 4,
+        "trend": "high",
+        "recommendation": "MEDIUM: Monitor closely and plan restocking"
+      },
+      {
+        "system": "ELECTRICAL POWER SUPPLY",
+        "avg_cost": 4921.75,
+        "avg_stock": 250.5,
+        "part_count": 315,
+        "demand_score": 4,
+        "trend": "high",
+        "recommendation": "MEDIUM: Monitor closely and plan restocking"
+      },
+      {
+        "system": "LIGHTING",
+        "avg_cost": 5289.02,
+        "avg_stock": 241.5,
+        "part_count": 315,
+        "demand_score": 4,
+        "trend": "high",
+        "recommendation": "MEDIUM: Monitor closely and plan restocking"
+      },
+      {
+        "system": "STEERING",
+        "avg_cost": 5072.49,
+        "avg_stock": 256.1,
+        "part_count": 315,
+        "demand_score": 4,
+        "trend": "high",
+        "recommendation": "MEDIUM: Monitor closely and plan restocking"
+      },
+      {
+        "system": "SAFETY",
+        "avg_cost": 5014.44,
+        "avg_stock": 245.9,
+        "part_count": 225,
+        "demand_score": 4,
+        "trend": "high",
+        "recommendation": "MEDIUM: Monitor closely and plan restocking"
+      },
+      {
+        "system": "CLIMATE CONTROL",
+        "avg_cost": 5287.62,
+        "avg_stock": 240.0,
+        "part_count": 180,
+        "demand_score": 4,
+        "trend": "high",
+        "recommendation": "MEDIUM: Monitor closely and plan restocking"
+      },
+      {
+        "system": "CLUTCH",
+        "avg_cost": 5059.26,
+        "avg_stock": 236.9,
+        "part_count": 180,
+        "demand_score": 4,
+        "trend": "high",
+        "recommendation": "MEDIUM: Monitor closely and plan restocking"
+      },
+      {
+        "system": "FUEL",
+        "avg_cost": 4947.89,
+        "avg_stock": 259.2,
+        "part_count": 180,
+        "demand_score": 4,
+        "trend": "high",
+        "recommendation": "MEDIUM: Monitor closely and plan restocking"
+      },
+      {
+        "system": "EXHAUST",
+        "avg_cost": 4758.0,
+        "avg_stock": 253.0,
+        "part_count": 135,
+        "demand_score": 4,
+        "trend": "high",
+        "recommendation": "MEDIUM: Monitor closely and plan restocking"
+      }
+    ],
+    "high_demand_systems": [],
+    "restock_alerts": [],
+    "generated_at": "2025-07-04T23:09:31.578077"
+  },
+  "supply_chain_analysis": {
+    "supplier_analysis": [
+      {
+        "manufacturer": "Magneti Marelli",
+        "part_count": 660,
+        "dependency_percentage": 14.67,
+        "avg_cost": 5138.55,
+        "avg_stock": 244.9,
+        "systems_covered": 12,
+        "risk_level": "HIGH",
+        "diversification_opportunity": false
+      },
+      {
+        "manufacturer": "Mahle",
+        "part_count": 652,
+        "dependency_percentage": 14.49,
+        "avg_cost": 5072.77,
+        "avg_stock": 249.0,
+        "systems_covered": 12,
+        "risk_level": "HIGH",
+        "diversification_opportunity": false
+      },
+      {
+        "manufacturer": "Delphi",
+        "part_count": 646,
+        "dependency_percentage": 14.36,
+        "avg_cost": 5007.92,
+        "avg_stock": 244.8,
+        "systems_covered": 12,
+        "risk_level": "HIGH",
+        "diversification_opportunity": false
+      },
+      {
+        "manufacturer": "Valeo",
+        "part_count": 642,
+        "dependency_percentage": 14.27,
+        "avg_cost": 5278.21,
+        "avg_stock": 247.5,
+        "systems_covered": 12,
+        "risk_level": "HIGH",
+        "diversification_opportunity": false
+      },
+      {
+        "manufacturer": "Denso",
+        "part_count": 640,
+        "dependency_percentage": 14.22,
+        "avg_cost": 4973.98,
+        "avg_stock": 241.3,
+        "systems_covered": 12,
+        "risk_level": "HIGH",
+        "diversification_opportunity": false
+      },
+      {
+        "manufacturer": "ACDelco",
+        "part_count": 633,
+        "dependency_percentage": 14.07,
+        "avg_cost": 5000.71,
+        "avg_stock": 251.0,
+        "systems_covered": 12,
+        "risk_level": "HIGH",
+        "diversification_opportunity": false
+      },
+      {
+        "manufacturer": "Bosch",
+        "part_count": 627,
+        "dependency_percentage": 13.93,
+        "avg_cost": 4862.84,
+        "avg_stock": 251.0,
+        "systems_covered": 12,
+        "risk_level": "HIGH",
+        "diversification_opportunity": false
+      }
+    ],
+    "country_analysis": [
+      {
+        "country": "India",
+        "part_count": 689,
+        "dependency_percentage": 15.31,
+        "avg_cost": 5116.77,
+        "risk_assessment": "MEDIUM"
+      },
+      {
+        "country": "China",
+        "part_count": 679,
+        "dependency_percentage": 15.09,
+        "avg_cost": 5104.53,
+        "risk_assessment": "MEDIUM"
+      },
+      {
+        "country": "USA",
+        "part_count": 660,
+        "dependency_percentage": 14.67,
+        "avg_cost": 4997.42,
+        "risk_assessment": "MEDIUM"
+      },
+      {
+        "country": "France",
+        "part_count": 634,
+        "dependency_percentage": 14.09,
+        "avg_cost": 5140.41,
+        "risk_assessment": "MEDIUM"
+      },
+      {
+        "country": "Italy",
+        "part_count": 627,
+        "dependency_percentage": 13.93,
+        "avg_cost": 5010.47,
+        "risk_assessment": "MEDIUM"
+      },
+      {
+        "country": "Japan",
+        "part_count": 617,
+        "dependency_percentage": 13.71,
+        "avg_cost": 4911.17,
+        "risk_assessment": "MEDIUM"
+      },
+      {
+        "country": "Germany",
+        "part_count": 594,
+        "dependency_percentage": 13.2,
+        "avg_cost": 5050.34,
+        "risk_assessment": "MEDIUM"
+      }
+    ],
+    "high_risk_suppliers": [
+      {
+        "manufacturer": "Magneti Marelli",
+        "part_count": 660,
+        "dependency_percentage": 14.67,
+        "avg_cost": 5138.55,
+        "avg_stock": 244.9,
+        "systems_covered": 12,
+        "risk_level": "HIGH",
+        "diversification_opportunity": false
+      },
+      {
+        "manufacturer": "Mahle",
+        "part_count": 652,
+        "dependency_percentage": 14.49,
+        "avg_cost": 5072.77,
+        "avg_stock": 249.0,
+        "systems_covered": 12,
+        "risk_level": "HIGH",
+        "diversification_opportunity": false
+      },
+      {
+        "manufacturer": "Delphi",
+        "part_count": 646,
+        "dependency_percentage": 14.36,
+        "avg_cost": 5007.92,
+        "avg_stock": 244.8,
+        "systems_covered": 12,
+        "risk_level": "HIGH",
+        "diversification_opportunity": false
+      },
+      {
+        "manufacturer": "Valeo",
+        "part_count": 642,
+        "dependency_percentage": 14.27,
+        "avg_cost": 5278.21,
+        "avg_stock": 247.5,
+        "systems_covered": 12,
+        "risk_level": "HIGH",
+        "diversification_opportunity": false
+      },
+      {
+        "manufacturer": "Denso",
+        "part_count": 640,
+        "dependency_percentage": 14.22,
+        "avg_cost": 4973.98,
+        "avg_stock": 241.3,
+        "systems_covered": 12,
+        "risk_level": "HIGH",
+        "diversification_opportunity": false
+      },
+      {
+        "manufacturer": "ACDelco",
+        "part_count": 633,
+        "dependency_percentage": 14.07,
+        "avg_cost": 5000.71,
+        "avg_stock": 251.0,
+        "systems_covered": 12,
+        "risk_level": "HIGH",
+        "diversification_opportunity": false
+      },
+      {
+        "manufacturer": "Bosch",
+        "part_count": 627,
+        "dependency_percentage": 13.93,
+        "avg_cost": 4862.84,
+        "avg_stock": 251.0,
+        "systems_covered": 12,
+        "risk_level": "HIGH",
+        "diversification_opportunity": false
+      }
+    ],
+    "diversification_opportunities": [],
+    "recommendations": [
+      "Consider diversifying from 7 high-dependency suppliers"
+    ]
+  },
+  "quality_analysis": {
+    "warranty_analysis": [
+      {
+        "warranty_period": "3 years",
+        "part_count": 1170,
+        "avg_cost": 4987.08,
+        "avg_stock": 242.2,
+        "warranty_score": 3,
+        "quality_indicator": "HIGH"
+      },
+      {
+        "warranty_period": "2 years",
+        "part_count": 1154,
+        "avg_cost": 5142.41,
+        "avg_stock": 246.1,
+        "warranty_score": 2,
+        "quality_indicator": "MEDIUM"
+      },
+      {
+        "warranty_period": "6 months",
+        "part_count": 1106,
+        "avg_cost": 5160.91,
+        "avg_stock": 253.5,
+        "warranty_score": 1,
+        "quality_indicator": "LOW"
+      },
+      {
+        "warranty_period": "1 year",
+        "part_count": 1070,
+        "avg_cost": 4900.21,
+        "avg_stock": 246.8,
+        "warranty_score": 1,
+        "quality_indicator": "LOW"
+      }
+    ],
+    "production_trends": [
+      {
+        "year": 2025,
+        "part_count": 358,
+        "avg_cost": 4985.07,
+        "age_years": -1,
+        "quality_trend": "IMPROVING"
+      },
+      {
+        "year": 2024,
+        "part_count": 402,
+        "avg_cost": 5066.28,
+        "age_years": 0,
+        "quality_trend": "IMPROVING"
+      },
+      {
+        "year": 2023,
+        "part_count": 408,
+        "avg_cost": 4978.72,
+        "age_years": 1,
+        "quality_trend": "IMPROVING"
+      },
+      {
+        "year": 2022,
+        "part_count": 417,
+        "avg_cost": 5223.91,
+        "age_years": 2,
+        "quality_trend": "IMPROVING"
+      },
+      {
+        "year": 2021,
+        "part_count": 403,
+        "avg_cost": 5270.86,
+        "age_years": 3,
+        "quality_trend": "STABLE"
+      },
+      {
+        "year": 2020,
+        "part_count": 437,
+        "avg_cost": 5108.6,
+        "age_years": 4,
+        "quality_trend": "STABLE"
+      },
+      {
+        "year": 2019,
+        "part_count": 419,
+        "avg_cost": 4886.94,
+        "age_years": 5,
+        "quality_trend": "STABLE"
+      },
+      {
+        "year": 2018,
+        "part_count": 430,
+        "avg_cost": 4924.53,
+        "age_years": 6,
+        "quality_trend": "DECLINING"
+      },
+      {
+        "year": 2017,
+        "part_count": 380,
+        "avg_cost": 5026.05,
+        "age_years": 7,
+        "quality_trend": "DECLINING"
+      },
+      {
+        "year": 2016,
+        "part_count": 422,
+        "avg_cost": 5246.17,
+        "age_years": 8,
+        "quality_trend": "DECLINING"
+      }
+    ],
+    "quality_recommendations": [
+      "Consider updating 2 aging part categories",
+      "Monitor 4 recent high-cost part categories for value"
+    ]
+  },
+  "cost_analysis": {
+    "cost_optimization_opportunities": [
+      {
+        "system": "ENGINE",
+        "manufacturer": "Magneti Marelli",
+        "part_count": 155,
+        "avg_cost": 5144.54,
+        "min_cost": 107.0,
+        "max_cost": 9956.0,
+        "price_variance": 9849.0,
+        "savings_potential": 2954.7,
+        "optimization_opportunity": "HIGH"
+      },
+      {
+        "system": "BODY",
+        "manufacturer": "Bosch",
+        "part_count": 124,
+        "avg_cost": 4933.1,
+        "min_cost": 145.0,
+        "max_cost": 9981.0,
+        "price_variance": 9836.0,
+        "savings_potential": 2950.8,
+        "optimization_opportunity": "HIGH"
+      },
+      {
+        "system": "BODY",
+        "manufacturer": "Delphi",
+        "part_count": 151,
+        "avg_cost": 5193.37,
+        "min_cost": 165.0,
+        "max_cost": 9996.0,
+        "price_variance": 9831.0,
+        "savings_potential": 2949.3,
+        "optimization_opportunity": "HIGH"
+      },
+      {
+        "system": "BODY",
+        "manufacturer": "Mahle",
+        "part_count": 125,
+        "avg_cost": 4998.55,
+        "min_cost": 124.0,
+        "max_cost": 9952.0,
+        "price_variance": 9828.0,
+        "savings_potential": 2948.4,
+        "optimization_opportunity": "HIGH"
+      },
+      {
+        "system": "ENGINE",
+        "manufacturer": "Delphi",
+        "part_count": 128,
+        "avg_cost": 5008.08,
+        "min_cost": 167.0,
+        "max_cost": 9990.0,
+        "price_variance": 9823.0,
+        "savings_potential": 2946.9,
+        "optimization_opportunity": "HIGH"
+      },
+      {
+        "system": "SAFETY",
+        "manufacturer": "Bosch",
+        "part_count": 35,
+        "avg_cost": 4618.94,
+        "min_cost": 162.0,
+        "max_cost": 9982.0,
+        "price_variance": 9820.0,
+        "savings_potential": 2946.0,
+        "optimization_opportunity": "HIGH"
+      },
+      {
+        "system": "BODY",
+        "manufacturer": "Magneti Marelli",
+        "part_count": 142,
+        "avg_cost": 5046.24,
+        "min_cost": 139.0,
+        "max_cost": 9957.0,
+        "price_variance": 9818.0,
+        "savings_potential": 2945.4,
+        "optimization_opportunity": "HIGH"
+      },
+      {
+        "system": "ENGINE",
+        "manufacturer": "Valeo",
+        "part_count": 143,
+        "avg_cost": 5351.01,
+        "min_cost": 169.0,
+        "max_cost": 9950.0,
+        "price_variance": 9781.0,
+        "savings_potential": 2934.3,
+        "optimization_opportunity": "HIGH"
+      },
+      {
+        "system": "STEERING",
+        "manufacturer": "Delphi",
+        "part_count": 37,
+        "avg_cost": 5673.14,
+        "min_cost": 123.0,
+        "max_cost": 9900.0,
+        "price_variance": 9777.0,
+        "savings_potential": 2933.1,
+        "optimization_opportunity": "HIGH"
+      },
+      {
+        "system": "ENGINE",
+        "manufacturer": "Mahle",
+        "part_count": 156,
+        "avg_cost": 5027.03,
+        "min_cost": 185.0,
+        "max_cost": 9960.0,
+        "price_variance": 9775.0,
+        "savings_potential": 2932.5,
+        "optimization_opportunity": "HIGH"
+      }
+    ],
+    "system_cost_analysis": [
+      {
+        "system": "ENGINE",
+        "part_count": 1034,
+        "avg_cost": 5099.13,
+        "total_inventory_value": 1284138900.0,
+        "cost_per_part": 1241913.83
+      },
+      {
+        "system": "BODY",
+        "part_count": 897,
+        "avg_cost": 5010.47,
+        "total_inventory_value": 1140992939.0,
+        "cost_per_part": 1272009.97
+      },
+      {
+        "system": "BRAKES",
+        "part_count": 360,
+        "avg_cost": 5040.11,
+        "total_inventory_value": 442678085.0,
+        "cost_per_part": 1229661.35
+      },
+      {
+        "system": "SUSPENSION",
+        "part_count": 359,
+        "avg_cost": 4939.42,
+        "total_inventory_value": 417790504.0,
+        "cost_per_part": 1163761.85
+      },
+      {
+        "system": "LIGHTING",
+        "part_count": 314,
+        "avg_cost": 5286.3,
+        "total_inventory_value": 411115396.0,
+        "cost_per_part": 1309284.7
+      },
+      {
+        "system": "STEERING",
+        "part_count": 315,
+        "avg_cost": 5072.49,
+        "total_inventory_value": 399495517.0,
+        "cost_per_part": 1268239.74
+      },
+      {
+        "system": "ELECTRICAL POWER SUPPLY",
+        "part_count": 314,
+        "avg_cost": 4920.76,
+        "total_inventory_value": 395033166.0,
+        "cost_per_part": 1258067.41
+      },
+      {
+        "system": "SAFETY",
+        "part_count": 225,
+        "avg_cost": 5014.44,
+        "total_inventory_value": 279860305.0,
+        "cost_per_part": 1243823.58
+      },
+      {
+        "system": "CLIMATE CONTROL",
+        "part_count": 180,
+        "avg_cost": 5287.62,
+        "total_inventory_value": 235943196.0,
+        "cost_per_part": 1310795.53
+      },
+      {
+        "system": "FUEL",
+        "part_count": 180,
+        "avg_cost": 4947.89,
+        "total_inventory_value": 219742003.0,
+        "cost_per_part": 1220788.91
+      }
+    ],
+    "potential_annual_savings": 237551.40000000005,
+    "recommendations": [
+      "High-priority cost optimization: 84 opportunities worth \u20b9237,551",
+      "Review pricing strategy for 12 high-cost systems",
+      "Optimize inventory levels for 12 high-value systems"
+    ]
+  },
+  "executive_summary": {
+    "key_findings": [
+      "7 suppliers present high dependency risk",
+      "\u20b9237,551 potential annual cost savings identified"
+    ],
+    "urgent_actions": [
+      "Diversify supplier base for risk reduction",
+      "Implement cost optimization initiatives"
+    ],
+    "cost_impact": {
+      "potential_savings": 237551.40000000005
+    },
+    "risk_assessment": "HIGH"
+  }
+}

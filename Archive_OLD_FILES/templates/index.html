@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IntelliPart - Auto Parts Search</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            background: #f8f9fa;
+            padding: 20px;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-label {
+            color: #6c757d;
+            font-size: 0.9em;
+        }
+
+        .search-section {
+            padding: 30px;
+        }
+
+        .search-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .search-input {
+            flex: 2;
+            padding: 12px 15px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .filter-select {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 16px;
+            background: white;
+        }
+
+        .search-btn {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .results-section {
+            padding: 0 30px 30px;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .results-info {
+            color: #6c757d;
+        }
+
+        .part-card {
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .part-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .part-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 15px;
+        }
+
+        .part-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .part-number {
+            background: #667eea;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.9em;
+        }
+
+        .part-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+        }
+
+        .detail-label {
+            font-weight: 500;
+            color: #6c757d;
+        }
+
+        .detail-value {
+            color: #2c3e50;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #6c757d;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            color: #6c757d;
+        }
+
+        .match-score {
+            background: #28a745;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+        }
+
+        @media (max-width: 768px) {
+            .search-row {
+                flex-direction: column;
+            }
+            
+            .stats {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .part-details {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔧 IntelliPart</h1>
+            <p>Intelligent Auto Parts Search System</p>
+        </div>
+
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-number">{{ stats.total_parts }}</div>
+                <div class="stat-label">Total Parts</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">{{ stats.systems_count }}</div>
+                <div class="stat-label">Systems</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">{{ stats.manufacturers_count }}</div>
+                <div class="stat-label">Manufacturers</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">₹{{ "%.0f"|format(stats.cost_range.avg) }}</div>
+                <div class="stat-label">Avg Cost</div>
+            </div>
+        </div>
+
+        <div class="search-section">
+            <div class="search-row">
+                <input type="text" id="queryInput" class="search-input" placeholder="Search parts, part numbers, systems..." />
+                <select id="systemFilter" class="filter-select">
+                    <option value="">All Systems</option>
+                    {% for system in filter_options.systems %}
+                    <option value="{{ system }}">{{ system }}</option>
+                    {% endfor %}
+                </select>
+                <select id="manufacturerFilter" class="filter-select">
+                    <option value="">All Manufacturers</option>
+                    {% for manufacturer in filter_options.manufacturers %}
+                    <option value="{{ manufacturer }}">{{ manufacturer }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="search-row">
+                <input type="number" id="minCost" class="filter-select" placeholder="Min Cost (₹)" />
+                <input type="number" id="maxCost" class="filter-select" placeholder="Max Cost (₹)" />
+                <input type="number" id="minStock" class="filter-select" placeholder="Min Stock" />
+                <button onclick="performSearch()" class="search-btn">🔍 Search Parts</button>
+            </div>
+        </div>
+
+        <div class="results-section" id="resultsSection" style="display: none;">
+            <div class="results-header" id="resultsHeader"></div>
+            <div id="resultsContainer"></div>
+        </div>
+    </div>
+
+    <script>
+        async function performSearch() {
+            const query = document.getElementById('queryInput').value;
+            const system = document.getElementById('systemFilter').value;
+            const manufacturer = document.getElementById('manufacturerFilter').value;
+            const minCost = document.getElementById('minCost').value;
+            const maxCost = document.getElementById('maxCost').value;
+            const minStock = document.getElementById('minStock').value;
+
+            const resultsSection = document.getElementById('resultsSection');
+            const resultsContainer = document.getElementById('resultsContainer');
+            const resultsHeader = document.getElementById('resultsHeader');
+
+            // Show loading
+            resultsSection.style.display = 'block';
+            resultsContainer.innerHTML = '<div class="loading">🔍 Searching...</div>';
+
+            try {
+                const response = await fetch('/search', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        query: query,
+                        system: system,
+                        manufacturer: manufacturer,
+                        min_cost: minCost,
+                        max_cost: maxCost,
+                        min_stock: minStock
+                    })
+                });
+
+                const data = await response.json();
+                displayResults(data);
+            } catch (error) {
+                resultsContainer.innerHTML = '<div class="no-results">❌ Error searching. Please try again.</div>';
+            }
+        }
+
+        function displayResults(data) {
+            const resultsContainer = document.getElementById('resultsContainer');
+            const resultsHeader = document.getElementById('resultsHeader');
+
+            // Update header
+            resultsHeader.innerHTML = `
+                <div class="results-info">
+                    Found <strong>${data.total_found}</strong> results in <strong>${data.search_time}s</strong>
+                </div>
+                <div class="results-info">
+                    Showing top ${Math.min(20, data.results.length)} results
+                </div>
+            `;
+
+            if (data.results.length === 0) {
+                resultsContainer.innerHTML = '<div class="no-results">🔍 No parts found. Try different search criteria.</div>';
+                return;
+            }
+
+            let html = '';
+            data.results.forEach(part => {
+                html += `
+                    <div class="part-card">
+                        <div class="part-header">
+                            <div class="part-title">${part.part_name || 'Unknown Part'}</div>
+                            <div class="part-number">${part.part_number || 'N/A'}</div>
+                        </div>
+                        <div class="part-details">
+                            <div class="detail-item">
+                                <span class="detail-label">System:</span>
+                                <span class="detail-value">${part.system || 'N/A'}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Type:</span>
+                                <span class="detail-value">${part.part_type || 'N/A'}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Manufacturer:</span>
+                                <span class="detail-value">${part.manufacturer || 'N/A'}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Origin:</span>
+                                <span class="detail-value">${part.country_of_origin || 'N/A'}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Cost:</span>
+                                <span class="detail-value">${part.cost || 'N/A'}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Stock:</span>
+                                <span class="detail-value">${part.stock || 'N/A'}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Warranty:</span>
+                                <span class="detail-value">${part.warranty_period || 'N/A'}</span>
+                            </div>
+                            ${part._match_score ? `
+                            <div class="detail-item">
+                                <span class="detail-label">Relevance:</span>
+                                <span class="match-score">${part._match_score}</span>
+                            </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+            });
+
+            resultsContainer.innerHTML = html;
+        }
+
+        // Search on Enter key
+        document.getElementById('queryInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+
+        // Auto-search on page load if there's a query
+        window.onload = function() {
+            // You can add initial search logic here if needed
+        };
+    </script>
+</body>
+</html>

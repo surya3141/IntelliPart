@@ -1,0 +1,31 @@
+{
+  "dataset_info": {
+    "total_parts": 200000,
+    "generation_date": "2025-07-07T16:43:05.139901",
+    "version": "1.0",
+    "format": "JSONL"
+  },
+  "categories": [
+    "Engine System",
+    "Brake System",
+    "Suspension System",
+    "Electrical System",
+    "Transmission",
+    "Body & Interior",
+    "Cooling System",
+    "Fuel System"
+  ],
+  "total_attributes_per_part": "50+",
+  "suppliers": 16,
+  "vehicle_models": 14,
+  "quality_standards": [
+    "ISO 9001",
+    "TS 16949",
+    "ISO 14001",
+    "OHSAS 18001",
+    "ARAI Certified",
+    "BIS Standard",
+    "Euro 6",
+    "BS VI"
+  ]
+}

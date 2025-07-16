@@ -1,0 +1,31 @@
+# Production Deep Analysis Requirements
+# Advanced analytics for 200K+ automotive parts
+
+# Core analytics and data processing
+numpy>=1.24.0
+pandas>=2.0.0
+scipy>=1.10.0
+
+# Machine learning and predictive analytics
+scikit-learn>=1.3.0
+
+# Database and performance
+sqlalchemy>=2.0.0
+
+# Time series and forecasting
+statsmodels>=0.14.0
+
+# Visualization (optional)
+matplotlib>=3.7.0
+seaborn>=0.12.0
+plotly>=5.15.0
+
+# Performance optimization
+numba>=0.57.0
+
+# Logging and monitoring
+loguru>=0.7.0
+
+# Development and testing
+pytest>=7.0.0
+pytest-benchmark>=4.0.0

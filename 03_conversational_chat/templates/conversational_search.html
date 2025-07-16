@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mahindra IntelliPart Search</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #e4002b 0%, #7c1320 100%);
+            min-height: 100vh;
+            color: #222;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 15px;
+            padding: 24px 20px 20px 20px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 30px rgba(228, 0, 43, 0.10);
+        }
+
+        .header h1 {
+            color: #e4002b;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .header p {
+            color: #7c1320;
+            font-size: 1.1em;
+        }
+
+        .chat-container {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 24px;
+            height: 70vh;
+        }
+
+        .chat-main {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 10px 30px rgba(228, 0, 43, 0.10);
+        }
+
+        .chat-header {
+            background: linear-gradient(90deg, #e4002b 80%, #7c1320 100%);
+            color: white;
+            padding: 18px 24px;
+            border-radius: 15px 15px 0 0;
+            font-weight: bold;
+            font-size: 1.15em;
+            letter-spacing: 0.5px;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 24px;
+            overflow-y: auto;
+            max-height: 400px;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            padding: 12px 16px;
+            border-radius: 12px;
+            max-width: 80%;
+        }
+
+        .message.user {
+            background: #ffe5ea;
+            margin-left: auto;
+            text-align: right;
+        }
+
+        .message.ai {
+            background: #f9f9f9;
+            border-left: 4px solid #e4002b;
+        }
+
+        .chat-input {
+            padding: 20px;
+            border-top: 1px solid #f3c2cc;
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid #f3c2cc;
+            border-radius: 25px;
+            outline: none;
+            font-size: 16px;
+            background: #fff;
+        }
+
+        .chat-input input:focus {
+            border-color: #e4002b;
+        }
+
+        .chat-input button {
+            background: linear-gradient(90deg, #e4002b 80%, #7c1320 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1em;
+            transition: background 0.3s;
+            box-shadow: 0 2px 8px rgba(228, 0, 43, 0.08);
+        }
+
+        .chat-input button:hover {
+            background: #b80022;
+        }
+
+        .chat-input button:disabled {
+            background: #f3c2cc;
+            color: #fff;
+            cursor: not-allowed;
+        }
+
+        .sidebar {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 15px;
+            padding: 24px 20px;
+            box-shadow: 0 10px 30px rgba(228, 0, 43, 0.10);
+            overflow-y: auto;
+        }
+
+        .sidebar h3 {
+            color: #e4002b;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #f3c2cc;
+            padding-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .quick-stats {
+            margin-bottom: 20px;
+        }
+
+        .stat {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #f3c2cc;
+        }
+
+        .stat strong {
+            color: #e4002b;
+        }
+
+        .search-result {
+            background: #fff5f7;
+            border: 1px solid #f3c2cc;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+
+        .search-result h4 {
+            color: #b80022;
+            margin-bottom: 8px;
+        }
+
+        .search-result .part-info {
+            display: block; /* Override grid for a list view */
+            margin-bottom: 10px;
+            font-size: 0.9em;
+        }
+
+        .part-detail {
+            padding: 5px 8px;
+            border-bottom: 1px solid #ffe5ea;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .part-detail:last-child {
+            border-bottom: none;
+        }
+        
+        .part-detail strong {
+            color: #b80022;
+            padding-right: 10px;
+        }
+
+        .part-detail.highlight-spec {
+            background-color: #fff0f0;
+            border-left: 3px solid #e4002b;
+            margin-left: -8px; /* Align with padding */
+            padding-left: 5px;
+        }
+
+        .part-detail.highlight-spec strong {
+            font-weight: 900; /* Bolder */
+        }
+
+        .search-result .match-info {
+            background: #ffe5ea;
+            border: 1px solid #f3c2cc;
+            border-radius: 4px;
+            padding: 8px;
+            margin-top: 8px;
+            font-size: 0.85em;
+        }
+
+        .search-result .cost-info {
+            background: #fff0f0;
+            border: 1px solid #e4002b;
+            border-radius: 4px;
+            padding: 8px;
+            margin-top: 8px;
+            font-size: 0.85em;
+        }
+
+        .suggestions {
+            background: #fff0f0;
+            border: 1px solid #e4002b;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 10px;
+        }
+
+        .suggestions h5 {
+            color: #b80022;
+            margin-bottom: 8px;
+        }
+
+        .suggestions ul {
+            list-style: none;
+        }
+
+        .suggestions li {
+            color: #b80022;
+            margin-bottom: 4px;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+
+        .suggestions li:hover {
+            background: #ffe5ea;
+        }
+
+        .results-wrapper {
+            margin-top: 15px;
+            padding-left: 20px; /* Indent to associate with AI response */
+            border-left: 3px solid #f3c2cc;
+        }
+
+        .results-wrapper h5 {
+            color: #7c1320;
+            margin-bottom: 10px;
+            font-size: 0.95em;
+            font-weight: bold;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            color: #e4002b;
+        }
+
+        .example-queries {
+            margin-bottom: 20px;
+        }
+
+        .example-query {
+            background: #ffe5ea;
+            border: 1px solid #e4002b;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin: 5px 0;
+            cursor: pointer;
+            font-size: 0.9em;
+            color: #b80022;
+            transition: background 0.2s;
+        }
+
+        .example-query:hover {
+            background: #f3c2cc;
+        }
+
+        .conversation-history {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .history-item {
+            padding: 8px;
+            border-bottom: 1px solid #f3c2cc;
+            font-size: 0.85em;
+        }
+
+        .history-item .query {
+            font-weight: bold;
+            color: #e4002b;
+        }
+
+        .history-item .meta {
+            color: #7c1320;
+            font-size: 0.8em;
+        }
+
+        /* Enhanced Results Styling */
+        .intelligent-response {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e6f3ff 100%);
+            border-left: 4px solid #e4002b;
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .ai-response-content {
+            color: #2d3748;
+        }
+
+        .results-section {
+            margin-top: 16px;
+        }
+
+        .enhanced-search-result {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .enhanced-search-result:hover {
+            box-shadow: 0 4px 12px rgba(228, 0, 43, 0.15);
+            border-color: #e4002b;
+        }
+
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .part-title {
+            color: #e4002b;
+            font-size: 18px;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .part-number {
+            background: #f7fafc;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            color: #4a5568;
+            font-weight: 500;
+        }
+
+        .result-details {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .detail-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            color: #4a5568;
+        }
+
+        .detail-item.cost {
+            color: #e4002b;
+            font-weight: 600;
+        }
+
+        .detail-item.stock.good-stock {
+            color: #38a169;
+        }
+
+        .detail-item.stock.low-stock {
+            color: #d69e2e;
+        }
+
+        .detail-item.stock.out-of-stock {
+            color: #e53e3e;
+        }
+
+        .enhanced-suggestions {
+            margin-top: 20px;
+            padding: 16px;
+            background: #f7fafc;
+            border-radius: 12px;
+        }
+
+        .enhanced-suggestions h5 {
+            color: #2d3748;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+
+        .suggestion-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .suggestion-chip {
+            background: #e4002b;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .suggestion-chip:hover {
+            background: #b80022;
+            transform: translateY(-1px);
+        }
+
+        .debug-section {
+            margin-top: 20px;
+            padding: 16px;
+            background: #fffdf7;
+            border: 1px solid #f6e05e;
+            border-radius: 12px;
+        }
+
+        .debug-section h5 {
+            color: #744210;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+
+        .debug-item {
+            background: #fff;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 8px;
+            border-left: 3px solid #f6e05e;
+            font-size: 13px;
+        }
+
+        /* Enhanced Card-Based Results Styling */
+        .ai-response-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .ai-icon {
+            font-size: 20px;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 16px;
+            margin-top: 12px;
+        }
+
+        .part-card {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 16px;
+            transition: all 0.3s ease;
+            position: relative;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .part-card:hover {
+            box-shadow: 0 8px 25px rgba(228, 0, 43, 0.15);
+            border-color: #e4002b;
+            transform: translateY(-2px);
+        }
+
+        .part-card.top-choice {
+            border-color: #e4002b;
+            box-shadow: 0 4px 12px rgba(228, 0, 43, 0.2);
+        }
+
+        .top-choice-badge {
+            position: absolute;
+            top: -8px;
+            right: 12px;
+            background: #e4002b;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .part-card-header {
+            margin-bottom: 12px;
+        }
+
+        .part-name {
+            color: #e4002b;
+            font-size: 16px;
+            font-weight: 600;
+            margin: 0 0 4px 0;
+        }
+
+        .part-number {
+            background: #f7fafc;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            color: #4a5568;
+            font-weight: 500;
+        }
+
+        .part-card-body {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .part-info {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: #4a5568;
+        }
+
+        .info-label {
+            font-weight: 500;
+            color: #2d3748;
+        }
+
+        .part-pricing {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .price {
+            font-size: 16px;
+            font-weight: 700;
+            color: #e4002b;
+        }
+
+        .stock {
+            font-size: 12px;
+            font-weight: 500;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .stock.good-stock {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+
+        .stock.low-stock {
+            background: #fef5e7;
+            color: #744210;
+        }
+
+        .stock.out-of-stock {
+            background: #fed7d7;
+            color: #742a2a;
+        }
+
+        .results-header {
+            margin-bottom: 12px;
+        }
+
+        .results-header h4 {
+            color: #2d3748;
+            font-size: 18px;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            .chat-container {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+            .sidebar {
+                order: -1;
+            }
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* New styles for card-based results */
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 16px;
+        }
+
+        .part-card {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 16px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+        }
+
+        .part-card.top-choice {
+            border-color: #38a169;
+            box-shadow: 0 4px 12px rgba(56, 161, 105, 0.15);
+        }
+
+        .top-choice-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #38a169;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .part-card-header {
+            margin-bottom: 12px;
+        }
+
+        .part-name {
+            color: #e4002b;
+            font-size: 16px;
+            font-weight: 500;
+            margin: 0;
+        }
+
+        .part-number {
+            font-size: 14px;
+            color: #4a5568;
+            margin-top: 4px;
+        }
+
+        .part-card-body {
+            flex: 1;
+        }
+
+        .part-info {
+            margin-bottom: 12px;
+        }
+
+        .info-item {
+            margin-bottom: 4px;
+            font-size: 14px;
+            color: #4a5568;
+        }
+
+        .info-label {
+            font-weight: bold;
+            color: #e4002b;
+        }
+
+        .part-pricing {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .price {
+            font-size: 18px;
+            color: #e4002b;
+            font-weight: 600;
+        }
+
+        .stock {
+            font-size: 14px;
+            padding: 4px 8px;
+            border-radius: 12px;
+        }
+
+        .stock.good-stock {
+            background: #c6f6d5;
+            color: #2f855a;
+        }
+
+        .stock.low-stock {
+            background: #fff5b1;
+            color: #d69e2e;
+        }
+
+        .stock.out-of-stock {
+            background: #fed7d7;
+            color: #e53e3e;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Mahindra IntelliPart Search</h1>
+            <p style="color:#7c1320;font-weight:bold;">Powered by MDM team</p>
+        </div>
+        <div class="chat-container">
+            <div class="chat-main">
+                <div class="chat-header">
+                    Mahindra IntelliPart Assistant
+                </div>
+                <div class="chat-messages" id="chatMessages">
+                    <!-- Assistant intro will be injected dynamically -->
+                </div>
+
+                <div class="loading" id="loading">
+                    🔍 Searching intelligent parts database...
+                </div>
+
+                <div class="chat-input">
+                    <input id="queryInput" type="text" placeholder="Type your question..." autocomplete="off" onkeydown="if(event.key==='Enter'){performSearch();}">
+                    <button id="searchButton" onclick="performSearch()">Search</button>
+                    <button id="ragButton" onclick="performRAG()" style="background:#7c1320;">AI Insights</button>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <div style="margin-bottom:18px;">
+                    <span id="partsCount" style="font-size:1.1em;color:#e4002b;font-weight:bold;">Loading parts count...</span>
+                </div>
+                <h3>📝 Recommended Test Queries</h3>
+                <div class="example-queries" id="recommendedTestQuestions">
+                    <div class="example-query">Loading recommended queries...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let conversationHistory = [];
+        let recommendedQueries = []; // Will be populated from backend
+
+        document.addEventListener('DOMContentLoaded', function() {
+            fetchRecommendedQueries();
+            fetchQuickInsights();
+            loadAssistantIntro();
+        });
+
+        // Dynamically shuffle recommended queries
+        function shuffle(array) {
+            let currentIndex = array.length, randomIndex;
+            while (currentIndex !== 0) {
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex--;
+                [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+            }
+            return array;
+        }
+
+        function useRecommendedQuery(element) {
+            document.getElementById('queryInput').value = element.textContent.trim();
+            performSearch();
+        }
+
+        function fetchRecommendedQueries() {
+            fetch('/api/example-queries')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success && data.example_queries) {
+                        recommendedQueries = data.example_queries;
+                        loadRecommendedQueries();
+                    } else {
+                        console.error('Failed to load recommended queries');
+                        const container = document.getElementById('recommendedTestQuestions');
+                        container.innerHTML = '<div class="example-query">Failed to load queries</div>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching recommended queries:', error);
+                    const container = document.getElementById('recommendedTestQuestions');
+                    container.innerHTML = '<div class="example-query">Failed to load queries</div>';
+                });
+        }
+
+        function fetchQuickInsights() {
+            fetch('/api/quick-insights')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success && data.insights) {
+                        document.getElementById('partsCount').textContent = `Parts in database: ${data.insights.total_parts}`;
+                    } else {
+                         document.getElementById('partsCount').textContent = 'Parts in database: N/A';
+                    }
+                })
+                .catch(() => {
+                    document.getElementById('partsCount').textContent = 'Parts in database: N/A';
+                });
+        }
+
+        function loadRecommendedQueries() {
+            const container = document.getElementById('recommendedTestQuestions');
+            container.innerHTML = '';
+            
+            if (recommendedQueries.length === 0) {
+                container.innerHTML = '<div class="example-query">No queries available</div>';
+                return;
+            }
+            
+            const shuffled = shuffle([...recommendedQueries]);
+            shuffled.slice(0, 8).forEach(q => {  // Show 8 queries instead of 5
+                const div = document.createElement('div');
+                div.className = 'example-query';
+                div.textContent = q;
+                div.onclick = function() { useRecommendedQuery(div); };
+                container.appendChild(div);
+            });
+        }
+
+        // Shuffle recommended queries after each search
+        function afterSearchUIUpdate() {
+            loadRecommendedQueries();
+        }
+
+        function loadAssistantIntro() {
+            const chatMessages = document.getElementById('chatMessages');
+            // Clear any previous messages
+            chatMessages.innerHTML = '';
+            fetch('/api/assistant-intro')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success && data.assistant_intro) {
+                        const intro = data.assistant_intro;
+                        addMessageToChat(
+                            `<div><strong>${intro.greeting || 'IntelliPart Assistant'}:</strong></div>
+                            <div>${intro.intro || ''}</div>
+                            <ul style="margin: 10px 0; padding-left: 20px;">
+                                ${(intro.capabilities || []).map(c => `<li>${c}</li>`).join('')}
+                            </ul>
+                            <div>${intro.suggestion || ''}</div>`,
+                            'assistant'
+                        );
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading assistant intro:', error);
+                    addMessageToChat('Welcome to IntelliPart! How can I help you today?', 'assistant');
+                });
+        }
+
+        function performSearch() {
+            const queryInput = document.getElementById('queryInput');
+            const query = queryInput.value.trim();
+            if (!query) return;
+
+            const loadingIndicator = document.getElementById('loading');
+            const searchButton = document.getElementById('searchButton');
+
+            // Show loading state
+            loadingIndicator.style.display = 'block';
+            searchButton.disabled = true;
+
+            // Add user message to chat
+            addMessageToChat(`<div><strong>You:</strong> ${query}</div>`, 'user');
+
+            // Clear input
+            queryInput.value = '';
+
+            // Perform search
+            fetch('/api/search', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    query: query,
+                    limit: 8 // Request more to have options, but display only top 5
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    displaySearchResults(data);
+                    updateConversationHistory(data);
+                } else {
+                    // Display intelligent no-results response
+                    const errorResponse = data.intelligent_response || data.error || 'Sorry, no results found.';
+                    addMessageToChat(`<div class="intelligent-response">
+                        <div class="ai-response-content">
+                            ${errorResponse.replace(/\n/g, '<br>')}
+                        </div>
+                    </div>`, 'assistant');
+                }
+            })
+            .catch(error => {
+                console.error("Search error:", error);
+                addMessageToChat(`<div class="intelligent-response">
+                    <div class="ai-response-content">
+                        Sorry, there was a connection error. Please try again. 🔄<br><br>
+                        <strong>Suggestions:</strong><br>
+                        • Check your internet connection<br>
+                        • Try a different search query<br>
+                        • Refresh the page if the problem persists
+                    </div>
+                </div>`, 'assistant');
+            })
+            .finally(() => {
+                // Hide loading state
+                loadingIndicator.style.display = 'none';
+                searchButton.disabled = false;
+                afterSearchUIUpdate();
+            });
+        }
+
+        function addMessageToChat(content, type) {
+            const messagesContainer = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+            messageDiv.innerHTML = content;
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function displaySearchResults(data) {
+            let resultHtml = '';
+            
+            // Show intelligent response first (this is the main conversational response)
+            if (data.intelligent_response) {
+                resultHtml += `
+                    <div class="intelligent-response">
+                        <div class="ai-response-header">
+                            <span class="ai-icon">🤖</span>
+                            <strong>IntelliPart Assistant</strong>
+                        </div>
+                        <div class="ai-response-content">
+                            ${data.intelligent_response.replace(/\n/g, '<br>')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Show results in cards format (more visual and user-friendly)
+            if (data.results && data.results.length > 0) {
+                resultHtml += `
+                    <div class="results-section">
+                        <div class="results-header">
+                            <h4>📋 Available Parts:</h4>
+                        </div>
+                        <div class="results-grid">
+                `;
+                
+                data.results.slice(0, 5).forEach((result, index) => {
+                    const partName = result.part_name || result["Part Description"] || result["partDescription"] || result["part_name"] || '';
+                    const partNumber = result.part_number || result["Part Number"] || result["partNumber"] || result["part_number"] || '';
+                    const system = result.system || result["System Name"] || result["system_name"] || '';
+                    const manufacturer = result.manufacturer || result["Source"] || result["manufacturer"] || '';
+                    const cost = result.cost || result["cost"] || '';
+                    const stock = result.stock || result["stock"] || '';
+                    
+                    if (partName) {
+                        const stockStatus = getStockStatus(stock);
+                        const isTopChoice = index === 0;
+                        
+                        resultHtml += `
+                            <div class="part-card ${isTopChoice ? 'top-choice' : ''}">
+                                ${isTopChoice ? '<div class="top-choice-badge">🏆 Best Match</div>' : ''}
+                                <div class="part-card-header">
+                                    <h5 class="part-name">${partName}</h5>
+                                    <span class="part-number">${partNumber}</span>
+                                </div>
+                                <div class="part-card-body">
+                                    <div class="part-info">
+                                        ${system ? `<div class="info-item"><span class="info-label">System:</span> ${system}</div>` : ''}
+                                        ${manufacturer ? `<div class="info-item"><span class="info-label">Brand:</span> ${manufacturer}</div>` : ''}
+                                    </div>
+                                    <div class="part-pricing">
+                                        ${cost ? `<div class="price">₹${cost}</div>` : ''}
+                                        ${stock ? `<div class="stock ${stockStatus.class}">${stockStatus.text}</div>` : ''}
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }
+                });
+                
+                resultHtml += `
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Show enhanced suggestions (if any)
+            if (data.suggestions && data.suggestions.length > 0) {
+                resultHtml += `
+                    <div class="enhanced-suggestions">
+                        <h5>💡 You might also like:</h5>
+                        <div class="suggestion-chips">
+                            ${data.suggestions.map(suggestion => 
+                                `<span class="suggestion-chip" onclick="useExampleQuery(this)">${suggestion}</span>`
+                            ).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            addMessageToChat(resultHtml, 'assistant');
+        }
+
+        function getStockStatus(stock) {
+            const stockNum = parseInt(stock) || 0;
+            if (stockNum > 20) {
+                return { class: 'good-stock', text: `${stockNum} in stock` };
+            } else if (stockNum > 0) {
+                return { class: 'low-stock', text: `${stockNum} left` };
+            } else {
+                return { class: 'out-of-stock', text: 'Out of stock' };
+            }
+        }
+
+        function updateConversationHistory(data) {
+            conversationHistory.unshift({
+                query: data.query,
+                result_count: data.result_count,
+                timestamp: new Date().toLocaleTimeString()
+            });
+
+            // Keep only last 10
+            conversationHistory = conversationHistory.slice(0, 10);
+
+            // Update display - This element does not exist in the current HTML.
+            // const historyContainer = document.getElementById('conversationHistory');
+            // if (historyContainer) {
+            //      historyContainer.innerHTML = '';
+            //      if (conversationHistory.length === 0) {
+            //          historyContainer.innerHTML = '<div class="history-item"><div class="meta">No searches yet</div></div>';
+            //      } else {
+            //          conversationHistory.forEach(item => {
+            //              const historyItem = document.createElement('div');
+            //              historyItem.className = 'history-item';
+            //              historyItem.innerHTML = `
+            //                  <div class="query">${item.query}</div>
+            //                  <div class="meta">${item.result_count} results | ${item.timestamp}</div>
+            //              `;
+            //              historyContainer.appendChild(historyItem);
+            //          });
+            //      }
+            // }
+        }
+
+        // Add some demo functionality
+        function findSimilar(partNumber) {
+            document.getElementById('queryInput').value = `Find parts similar to ${partNumber}`;
+            performSearch();
+        }
+
+        function findCheaper() {
+            fetch('/api/followup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    question: 'Find cheaper alternatives'
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    let responseHtml = `<div><strong>IntelliPart Assistant:</strong></div>`;
+                    responseHtml += `<div>${data.response}</div>`;
+                    
+                    if (data.alternatives && data.alternatives.length > 0) {
+                        responseHtml += '<div style="margin-top: 10px;">';
+                        data.alternatives.slice(0, 3).forEach(alt => {
+                            responseHtml += `
+                                <div class="search-result">
+                                    <h4>${alt.part_name || 'N/A'} (${alt.part_number || 'N/A'})</h4>
+                                    <div class="part-info">
+                                        <span><strong>Cost:</strong> ₹${alt.cost || 'N/A'}</span>
+                                        <span><strong>Savings:</strong> ₹${alt.savings || 0}</span>
+                                    </div>
+                                </div>
+                            `;
+                        });
+                        responseHtml += '</div>';
+                    }
+                    
+                    addMessageToChat(responseHtml, 'ai');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function performRAG() {
+            const query = document.getElementById('queryInput').value.trim();
+            if (!query) return;
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('ragButton').disabled = true;
+            addMessageToChat(query, 'user');
+            document.getElementById('queryInput').value = '';
+            // Prompt for OpenAI API key (or set it here for demo)
+            let openaiApiKey = window.OPENAI_API_KEY || prompt('Enter your OpenAI API key (leave blank to use local LLM):');
+            // If blank, use local LLM (Ollama)
+            let body = { query: query, limit: 5 };
+            if (openaiApiKey) body.openai_api_key = openaiApiKey;
+            fetch('/api/rag-answer', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('ragButton').disabled = false;
+                if (data.success) {
+                    let ragHtml = `<div><strong>RAG Answer:</strong></div>`;
+                    ragHtml += `<div style='margin:10px 0 15px 0;'><em>LLM:</em> <span style='background:#e6f3ff;padding:6px 10px;border-radius:6px;'>${data.answer}</span></div>`;
+                    if (data.results && data.results.length > 0) {
+                        ragHtml += '<div style="margin-top: 15px;"><strong>Supporting Records:</strong>';
+                        data.results.slice(0, 5).forEach((result, index) => {
+                            ragHtml += `<div class="search-result"><h4>${result.part_name || ''} (${result.part_number || ''})</h4>`;
+                            ragHtml += `<div class="part-info">`;
+                            ragHtml += result.system ? `<span><strong>System:</strong> ${result.system}</span>` : '';
+                            ragHtml += result.manufacturer ? `<span><strong>Manufacturer:</strong> ${result.manufacturer}</span>` : '';
+                            ragHtml += result.cost ? `<span><strong>Cost:</strong> ₹${result.cost}</span>` : '';
+                            ragHtml += result.stock ? `<span><strong>Stock:</strong> ${result.stock}</span>` : '';
+                            ragHtml += `</div></div>`;
+                        });
+                        ragHtml += '</div>';
+                    }
+                    addMessageToChat(ragHtml, 'ai');
+                } else {
+                    addMessageToChat('Sorry, there was an error: ' + (data.error || 'No answer.'), 'ai');
+                }
+            })
+            .catch(error => {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('ragButton').disabled = false;
+                addMessageToChat('Sorry, there was a connection error. Please try again.', 'ai');
+                console.error('Error:', error);
+            });
+        }
+
+        // Removed redundant functions like handleSearch, setInitialState, etc.
+        // All logic is now consolidated into the functions above.
+    </script>
+</body>
+</html>

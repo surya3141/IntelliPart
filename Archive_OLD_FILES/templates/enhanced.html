@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IntelliPart Enhanced - Auto Parts Search & Analytics</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.2em;
+        }
+
+        .nav-tabs {
+            display: flex;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 5px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-tab {
+            flex: 1;
+            padding: 12px 20px;
+            background: transparent;
+            border: none;
+            color: white;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            font-size: 1em;
+        }
+
+        .nav-tab.active {
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .nav-tab:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .tab-content {
+            display: none;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .search-section {
+            margin-bottom: 30px;
+        }
+
+        .search-container {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .search-input-container {
+            flex: 2;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 15px 50px 15px 20px;
+            border: 2px solid #e1e1e1;
+            border-radius: 25px;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            color: white;
+            font-size: 18px;
+            transition: all 0.3s ease;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .search-type-selector {
+            display: flex;
+            gap: 10px;
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .search-type-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 10px;
+            background: transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .search-type-btn.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .filters-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .filter-group label {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        .filter-group select,
+        .filter-group input {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .results-section {
+            margin-top: 20px;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 10px;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .part-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border: 1px solid #e1e1e1;
+        }
+
+        .part-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .part-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .part-name {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .part-number {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .score-badge {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+
+        .part-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .detail-label {
+            font-size: 0.8em;
+            color: #666;
+            font-weight: 600;
+        }
+
+        .detail-value {
+            font-size: 0.9em;
+            color: #333;
+        }
+
+        .part-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .action-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+        }
+
+        .similar-btn {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .similar-btn:hover {
+            background: #bbdefb;
+        }
+
+        .suggestions-list {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 0 0 15px 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            z-index: 1000;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .suggestion-item {
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .suggestion-item:hover {
+            background: #f8f9fa;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .analytics-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .chart-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .loading::after {
+            content: "";
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .insights-list {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .insight-item {
+            padding: 10px;
+            margin-bottom: 10px;
+            background: #e3f2fd;
+            border-radius: 8px;
+            border-left: 4px solid #1976d2;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .search-container {
+                flex-direction: column;
+            }
+
+            .filters-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔧 IntelliPart Enhanced</h1>
+            <p>Advanced Auto Parts Search & Analytics Dashboard</p>
+        </div>
+
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="showTab('search')">🔍 Search</button>
+            <button class="nav-tab" onclick="showTab('analytics')">📊 Analytics</button>
+        </div>
+
+        <!-- Search Tab -->
+        <div id="search-tab" class="tab-content active">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">{{ stats.total_parts|default(0) }}</div>
+                    <div class="stat-label">Total Parts</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">{{ stats.manufacturers_count|default(0) }}</div>
+                    <div class="stat-label">Manufacturers</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">{{ stats.systems_count|default(0) }}</div>
+                    <div class="stat-label">Systems</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${{ "%.2f"|format(stats.cost_range.avg|default(0)) }}</div>
+                    <div class="stat-label">Avg Cost</div>
+                </div>
+            </div>
+
+            <div class="search-section">
+                <div class="search-container">
+                    <div class="search-input-container">
+                        <input type="text" id="searchInput" class="search-input" 
+                               placeholder="Search for auto parts (e.g., 'LED headlight', 'brake pad', 'engine oil filter')...">
+                        <button class="search-btn" onclick="performSearch()">🔍</button>
+                        <div id="suggestions" class="suggestions-list" style="display: none;"></div>
+                    </div>
+                </div>
+
+                <div class="search-type-selector">
+                    <button class="search-type-btn active" data-type="smart">🧠 Smart</button>
+                    <button class="search-type-btn" data-type="ai">🤖 AI</button>
+                    <button class="search-type-btn" data-type="keyword">🔤 Keyword</button>
+                    <button class="search-type-btn" data-type="fuzzy">🔀 Fuzzy</button>
+                </div>
+
+                <div class="filters-section">
+                    <h3>Filters</h3>
+                    <div class="filters-grid">
+                        <div class="filter-group">
+                            <label>System</label>
+                            <select id="systemFilter">
+                                <option value="">All Systems</option>
+                                {% for system in filter_options.systems %}
+                                <option value="{{ system }}">{{ system }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>Manufacturer</label>
+                            <select id="manufacturerFilter">
+                                <option value="">All Manufacturers</option>
+                                {% for manufacturer in filter_options.manufacturers %}
+                                <option value="{{ manufacturer }}">{{ manufacturer }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>Min Cost ($)</label>
+                            <input type="number" id="minCostFilter" placeholder="0" min="0" step="0.01">
+                        </div>
+                        <div class="filter-group">
+                            <label>Max Cost ($)</label>
+                            <input type="number" id="maxCostFilter" placeholder="No limit" min="0" step="0.01">
+                        </div>
+                        <div class="filter-group">
+                            <label>Min Stock</label>
+                            <input type="number" id="minStockFilter" placeholder="0" min="0">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="results-section">
+                <div id="resultsHeader" class="results-header" style="display: none;">
+                    <div>
+                        <span id="resultsCount">0</span> results found
+                        <span id="searchTime"></span>
+                    </div>
+                    <div id="searchTypeDisplay"></div>
+                </div>
+                <div id="resultsGrid" class="results-grid"></div>
+            </div>
+        </div>
+
+        <!-- Analytics Tab -->
+        <div id="analytics-tab" class="tab-content">
+            <h2>📊 Analytics Dashboard</h2>
+            <div class="loading" id="analyticsLoading">Loading analytics data...</div>
+            <div id="analyticsContent" style="display: none;">
+                <div class="analytics-section">
+                    <h3>Overview Statistics</h3>
+                    <div id="overviewStats" class="stats-grid"></div>
+                </div>
+                
+                <div class="analytics-section">
+                    <h3>Cost Analysis</h3>
+                    <div id="costAnalysis" class="chart-container"></div>
+                </div>
+                
+                <div class="analytics-section">
+                    <h3>Inventory Analysis</h3>
+                    <div id="inventoryAnalysis" class="chart-container"></div>
+                </div>
+                
+                <div class="analytics-section">
+                    <h3>Top Manufacturers</h3>
+                    <div id="manufacturerAnalysis" class="chart-container"></div>
+                </div>
+                
+                <div class="analytics-section">
+                    <h3>Parts by System</h3>
+                    <div id="systemAnalysis" class="chart-container"></div>
+                </div>
+                
+                <div class="insights-list">
+                    <h3>💡 Key Insights</h3>
+                    <div id="insightsList"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentSearchType = 'smart';
+        let searchTimeout;
+
+        // Tab management
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Show selected tab
+            document.getElementById(tabName + '-tab').classList.add('active');
+            event.target.classList.add('active');
+
+            // Load analytics if analytics tab is selected
+            if (tabName === 'analytics') {
+                loadAnalytics();
+            }
+        }
+
+        // Search type selection
+        document.querySelectorAll('.search-type-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.search-type-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                currentSearchType = this.dataset.type;
+                if (document.getElementById('searchInput').value.trim()) {
+                    performSearch();
+                }
+            });
+        });
+
+        // Search input with auto-suggestions
+        document.getElementById('searchInput').addEventListener('input', function() {
+            const query = this.value.trim();
+            
+            if (query.length >= 2) {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    getSuggestions(query);
+                }, 300);
+            } else {
+                hideSuggestions();
+            }
+        });
+
+        // Enter key search
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+
+        // Filter change listeners
+        ['systemFilter', 'manufacturerFilter', 'minCostFilter', 'maxCostFilter', 'minStockFilter'].forEach(id => {
+            document.getElementById(id).addEventListener('change', function() {
+                if (document.getElementById('searchInput').value.trim() || hasActiveFilters()) {
+                    performSearch();
+                }
+            });
+        });
+
+        function hasActiveFilters() {
+            return document.getElementById('systemFilter').value ||
+                   document.getElementById('manufacturerFilter').value ||
+                   document.getElementById('minCostFilter').value ||
+                   document.getElementById('maxCostFilter').value ||
+                   document.getElementById('minStockFilter').value;
+        }
+
+        function getSuggestions(partial) {
+            fetch('/suggestions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ partial: partial })
+            })
+            .then(response => response.json())
+            .then(data => {
+                showSuggestions(data.suggestions);
+            })
+            .catch(error => {
+                console.error('Error getting suggestions:', error);
+            });
+        }
+
+        function showSuggestions(suggestions) {
+            const suggestionsDiv = document.getElementById('suggestions');
+            if (suggestions.length === 0) {
+                hideSuggestions();
+                return;
+            }
+
+            suggestionsDiv.innerHTML = suggestions.map(suggestion => 
+                `<div class="suggestion-item" onclick="selectSuggestion('${suggestion}')">${suggestion}</div>`
+            ).join('');
+            suggestionsDiv.style.display = 'block';
+        }
+
+        function hideSuggestions() {
+            document.getElementById('suggestions').style.display = 'none';
+        }
+
+        function selectSuggestion(suggestion) {
+            document.getElementById('searchInput').value = suggestion;
+            hideSuggestions();
+            performSearch();
+        }
+
+        function performSearch() {
+            const query = document.getElementById('searchInput').value.trim();
+            
+            if (!query && !hasActiveFilters()) {
+                return;
+            }
+
+            hideSuggestions();
+
+            const searchData = {
+                query: query,
+                search_type: currentSearchType,
+                system: document.getElementById('systemFilter').value,
+                manufacturer: document.getElementById('manufacturerFilter').value,
+                min_cost: document.getElementById('minCostFilter').value,
+                max_cost: document.getElementById('maxCostFilter').value,
+                min_stock: document.getElementById('minStockFilter').value
+            };
+
+            // Show loading
+            document.getElementById('resultsGrid').innerHTML = '<div class="loading">Searching...</div>';
+            document.getElementById('resultsHeader').style.display = 'flex';
+
+            fetch('/search', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(searchData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                displayResults(data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('resultsGrid').innerHTML = '<div class="loading">Error occurred during search</div>';
+            });
+        }
+
+        function displayResults(data) {
+            const resultsGrid = document.getElementById('resultsGrid');
+            const resultsCount = document.getElementById('resultsCount');
+            const searchTime = document.getElementById('searchTime');
+            const searchTypeDisplay = document.getElementById('searchTypeDisplay');
+
+            resultsCount.textContent = data.total_found;
+            searchTime.textContent = `(${data.search_time}s)`;
+            searchTypeDisplay.textContent = `${data.search_type.toUpperCase()} Search`;
+
+            if (data.results.length === 0) {
+                resultsGrid.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #666;">
+                        <h3>No parts found</h3>
+                        <p>Try adjusting your search query or filters</p>
+                    </div>
+                `;
+                return;
+            }
+
+            resultsGrid.innerHTML = data.results.map(part => `
+                <div class="part-card">
+                    <div class="part-header">
+                        <div>
+                            <div class="part-name">${part.part_name || 'Unknown Part'}</div>
+                            <div class="part-number">#${part.part_number || 'N/A'}</div>
+                        </div>
+                        <div class="score-badge">
+                            ${part._score ? part._score.toFixed(3) : 'N/A'} (${part._score_type || 'match'})
+                        </div>
+                    </div>
+                    <div class="part-details">
+                        <div class="detail-item">
+                            <div class="detail-label">System</div>
+                            <div class="detail-value">${part.system || 'N/A'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Type</div>
+                            <div class="detail-value">${part.part_type || 'N/A'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Manufacturer</div>
+                            <div class="detail-value">${part.manufacturer || 'N/A'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Cost</div>
+                            <div class="detail-value">${part.cost || 'N/A'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Stock</div>
+                            <div class="detail-value">${part.stock || '0'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Material</div>
+                            <div class="detail-value">${part.material || 'N/A'}</div>
+                        </div>
+                    </div>
+                    <div class="part-actions">
+                        <button class="action-btn similar-btn" onclick="findSimilar('${part.part_number}')">
+                            🔍 Find Similar
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function findSimilar(partNumber) {
+            fetch(`/similar/${partNumber}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.similar_parts && data.similar_parts.length > 0) {
+                    displayResults({
+                        results: data.similar_parts,
+                        total_found: data.similar_parts.length,
+                        search_time: 0,
+                        search_type: 'similarity'
+                    });
+                    document.getElementById('searchInput').value = `Similar to ${partNumber}`;
+                } else {
+                    alert('No similar parts found');
+                }
+            })
+            .catch(error => {
+                console.error('Error finding similar parts:', error);
+            });
+        }
+
+        function loadAnalytics() {
+            const loading = document.getElementById('analyticsLoading');
+            const content = document.getElementById('analyticsContent');
+            
+            loading.style.display = 'block';
+            content.style.display = 'none';
+
+            fetch('/analytics/data')
+            .then(response => response.json())
+            .then(data => {
+                displayAnalytics(data);
+                loading.style.display = 'none';
+                content.style.display = 'block';
+            })
+            .catch(error => {
+                console.error('Error loading analytics:', error);
+                loading.innerHTML = 'Error loading analytics data';
+            });
+        }
+
+        function displayAnalytics(data) {
+            // Overview stats
+            const overviewStats = document.getElementById('overviewStats');
+            const overview = data.overview || {};
+            overviewStats.innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-value">${overview.total_parts || 0}</div>
+                    <div class="stat-label">Total Parts</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${overview.unique_manufacturers || 0}</div>
+                    <div class="stat-label">Manufacturers</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${overview.unique_systems || 0}</div>
+                    <div class="stat-label">Systems</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">$${overview.avg_cost || 0}</div>
+                    <div class="stat-label">Avg Cost</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">$${overview.total_inventory_value || 0}</div>
+                    <div class="stat-label">Total Value</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${overview.total_stock_units || 0}</div>
+                    <div class="stat-label">Total Stock</div>
+                </div>
+            `;
+
+            // Cost analysis
+            const costAnalysis = document.getElementById('costAnalysis');
+            const cost = data.cost_analysis || {};
+            if (cost.cost_stats) {
+                costAnalysis.innerHTML = `
+                    <h4>Cost Statistics</h4>
+                    <p><strong>Range:</strong> $${cost.cost_stats.min} - $${cost.cost_stats.max}</p>
+                    <p><strong>Mean:</strong> $${cost.cost_stats.mean}</p>
+                    <p><strong>Median:</strong> $${cost.cost_stats.median}</p>
+                    <p><strong>Standard Deviation:</strong> $${cost.cost_stats.std}</p>
+                    
+                    <h4>Cost Ranges</h4>
+                    <p><strong>Budget (≤$100):</strong> ${cost.cost_ranges?.budget || 0} parts</p>
+                    <p><strong>Mid-range ($100-$500):</strong> ${cost.cost_ranges?.mid_range || 0} parts</p>
+                    <p><strong>Premium (>$500):</strong> ${cost.cost_ranges?.premium || 0} parts</p>
+                `;
+            } else {
+                costAnalysis.innerHTML = '<p>Cost data not available</p>';
+            }
+
+            // Inventory analysis
+            const inventoryAnalysis = document.getElementById('inventoryAnalysis');
+            const inventory = data.inventory_analysis || {};
+            if (inventory.stock_stats) {
+                inventoryAnalysis.innerHTML = `
+                    <h4>Stock Statistics</h4>
+                    <p><strong>Total Units:</strong> ${inventory.stock_stats.total_units}</p>
+                    <p><strong>Average Stock:</strong> ${inventory.stock_stats.avg_stock}</p>
+                    <p><strong>Out of Stock:</strong> ${inventory.stock_stats.parts_out_of_stock} parts</p>
+                    <p><strong>Low Stock:</strong> ${inventory.stock_stats.parts_low_stock} parts</p>
+                    <p><strong>High Stock:</strong> ${inventory.stock_stats.parts_high_stock} parts</p>
+                `;
+            } else {
+                inventoryAnalysis.innerHTML = '<p>Inventory data not available</p>';
+            }
+
+            // Manufacturer analysis
+            const manufacturerAnalysis = document.getElementById('manufacturerAnalysis');
+            const manufacturers = data.manufacturer_analysis?.top_manufacturers || {};
+            const mfgHtml = Object.entries(manufacturers).slice(0, 10).map(([mfg, count]) => 
+                `<p><strong>${mfg}:</strong> ${count} parts</p>`
+            ).join('');
+            manufacturerAnalysis.innerHTML = mfgHtml || '<p>Manufacturer data not available</p>';
+
+            // System analysis
+            const systemAnalysis = document.getElementById('systemAnalysis');
+            const systems = data.system_analysis?.parts_by_system || {};
+            const systemHtml = Object.entries(systems).slice(0, 10).map(([system, count]) => 
+                `<p><strong>${system}:</strong> ${count} parts</p>`
+            ).join('');
+            systemAnalysis.innerHTML = systemHtml || '<p>System data not available</p>';
+
+            // Insights
+            const insightsList = document.getElementById('insightsList');
+            const insights = data.insights || [];
+            insightsList.innerHTML = insights.map((insight, i) => 
+                `<div class="insight-item">${i + 1}. ${insight}</div>`
+            ).join('') || '<p>No insights available</p>';
+        }
+
+        // Click outside to hide suggestions
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.search-input-container')) {
+                hideSuggestions();
+            }
+        });
+
+        // Initial load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Perform initial search if needed
+            console.log('IntelliPart Enhanced loaded successfully');
+        });
+    </script>
+</body>
+</html>

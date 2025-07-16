@@ -1,0 +1,69 @@
+{
+  "queries": [
+    "Show brake pads with friction coefficient above 0.4",
+    "Show Mahindra Radiator with Metallic material",
+    "Show me Mahindra Radiator for Thar",
+    "Show me Mahindra Exhaust System for Marazzo",
+    "Show all parts compatible with Marazzo",
+    "Show me Mahindra Battery for TUV300",
+    "Show Mahindra Radiator with Alloy material",
+    "Show me Mahindra Radiator for Marazzo",
+    "Find parts made of Aluminized Steel",
+    "Show me Mahindra Radiator for TUV300",
+    "Show clutch plates with ceramic material",
+    "Find radiators with cooling capacity over 15000 BTU",
+    "Show well-stocked parts",
+    "Show all parts compatible with Alturas",
+    "List parts with good condition rating",
+    "Show me Mahindra Engine Disc/Flywheel for Marazzo",
+    "Show expensive parts over ₹10000",
+    "Show all parts compatible with e2o",
+    "Find tyres with size 235/65R17",
+    "Show me Mahindra Battery for Thar",
+    "Show me Mahindra Tyre/Wheel for TUV300",
+    "Show me Mahindra Engine Disc/Flywheel for TUV300",
+    "Find all Radiator components",
+    "Find all Tyre/Wheel components",
+    "List batteries with 12V rating"
+  ],
+  "analysis": {
+    "total_parts": 500,
+    "part_types": [
+      "Mahindra Tyre/Wheel",
+      "Mahindra Engine Disc/Flywheel",
+      "Mahindra Exhaust System",
+      "Mahindra Radiator",
+      "Mahindra Battery",
+      "Mahindra Brake Pad",
+      "Mahindra Clutch Plate"
+    ],
+    "models": [
+      "TUV300",
+      "Thar",
+      "Marazzo",
+      "e2o",
+      "XUV500",
+      "Alturas",
+      "KUV100",
+      "Scorpio",
+      "Bolero",
+      "Verito"
+    ],
+    "materials": [
+      "Stainless Steel",
+      "Copper",
+      "Alloy",
+      "Metallic",
+      "Aluminized Steel",
+      "Ceramic",
+      "Aluminum",
+      "Organic",
+      "Composite",
+      "Steel",
+      "Forged Steel",
+      "Semi-Metallic",
+      "Plastic",
+      "Rubber"
+    ]
+  }
+}

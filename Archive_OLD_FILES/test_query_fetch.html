@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Frontend Query Fetching</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .query-item { padding: 10px; margin: 5px; background: #f0f0f0; border-radius: 5px; }
+        .success { color: green; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+    <h1>Frontend Query Fetching Test</h1>
+    <div id="status">Loading...</div>
+    <div id="queries-container"></div>
+
+    <script>
+        function testFetchQueries() {
+            const statusDiv = document.getElementById('status');
+            const queriesContainer = document.getElementById('queries-container');
+
+            statusDiv.textContent = 'Fetching queries from backend...';
+
+            fetch('http://localhost:5004/api/example-queries')
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Response:', data);
+                    if (data.success && data.example_queries) {
+                        statusDiv.innerHTML = '<span class="success">✅ Successfully fetched ' + data.example_queries.length + ' queries!</span>';
+                        queriesContainer.innerHTML = '';
+                        
+                        data.example_queries.forEach((query, index) => {
+                            const div = document.createElement('div');
+                            div.className = 'query-item';
+                            div.textContent = `${index + 1}. ${query}`;
+                            queriesContainer.appendChild(div);
+                        });
+                    } else {
+                        statusDiv.innerHTML = '<span class="error">❌ Failed to fetch queries. Response: ' + JSON.stringify(data) + '</span>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    statusDiv.innerHTML = '<span class="error">❌ Error fetching queries: ' + error.message + '</span>';
+                });
+        }
+
+        // Run the test when the page loads
+        document.addEventListener('DOMContentLoaded', testFetchQueries);
+    </script>
+</body>
+</html>

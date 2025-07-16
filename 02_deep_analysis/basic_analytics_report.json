@@ -1,0 +1,22 @@
+{
+  "metadata": {
+    "analysis_type": "basic",
+    "total_parts": 5000,
+    "data_source": "fallback"
+  },
+  "summary": {
+    "total_parts": 5000,
+    "unique_categories": 8,
+    "average_cost": 4989.66,
+    "categories": [
+      "Fuel System",
+      "Engine System",
+      "Cooling System",
+      "Body & Interior",
+      "Suspension System",
+      "Brake System",
+      "Transmission",
+      "Electrical System"
+    ]
+  }
+}
